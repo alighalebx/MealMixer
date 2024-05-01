@@ -8,6 +8,7 @@ import { User } from '../model/user.interface';
   providedIn: 'root'
 })
 export class AuthService {
+  userId: string = '';
 
   constructor(
     private fireauth: AngularFireAuth,
@@ -17,7 +18,11 @@ export class AuthService {
 
   // Login function
   login(email: string, password: string) {
-    this.fireauth.signInWithEmailAndPassword(email, password).then(() => {
+    this.fireauth.signInWithEmailAndPassword(email, password).then((userCredential) => {
+      // Store the user ID after successful login
+      if (userCredential.user) {
+        this.userId = userCredential.user.uid;
+      }
       this.router.navigate(['dashboard']);
     }, err => {
       alert("Something went wrong");
@@ -63,6 +68,16 @@ export class AuthService {
       this.router.navigate(['/login']);
     }, err => {
       alert(err.message);
+    });
+  }
+
+
+  forgotPassword(email: string) {
+    this.fireauth.sendPasswordResetEmail(email).then(() => {
+      this.router.navigate(['/verify-email']); // Redirect to email verification page
+    }).catch(err => {
+      console.error('Error sending password reset email:', err);
+      alert('Something went wrong');
     });
   }
 

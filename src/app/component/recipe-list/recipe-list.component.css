@@ -1,0 +1,28 @@
+.recipe-list {
+    padding: 20px;
+  }
+  
+  .recipe-list h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+  
+  .recipe-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .recipe-list li {
+    margin-bottom: 10px;
+  }
+  
+  .recipe-list li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .recipe-list li a:hover {
+    color: #007bff;
+  }
+  
