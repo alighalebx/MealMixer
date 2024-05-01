@@ -1,50 +1,50 @@
 <div class="container-fluid mt-5">
-    <div class="row">
-      <div class="col"></div>
-      <div class="col-8">
-        <div class="card shadow">
-          <div class="card-body">
-            <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
-              <div class="mb-3">
-                <h4 class="text-dark text-muted">Create Recipe</h4>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-8">
+      <div class="card shadow">
+        <div class="card-body">
+          <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <h4 class="text-dark text-muted">Create Recipe</h4>
+            </div>
+            <div class="mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input type="text" class="form-control" id="title" formControlName="title">
+            </div>
+            <!-- Ingredients -->
+            <div formArrayName="ingredients">
+              <div *ngFor="let ingredient of getIngredientsControls(); let i = index">
+                <input type="text" class="form-control mb-2" [formControlName]="i" placeholder="Ingredient">
               </div>
-              <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" formControlName="title">
+            </div>
+            <!-- Instructions -->
+            <div formArrayName="instructions">
+              <div *ngFor="let instruction of getInstructionsControls(); let i = index">
+                <input type="text" class="form-control mb-2" [formControlName]="i" placeholder="Instruction">
               </div>
-              <!-- Ingredients -->
-              <div formArrayName="ingredients">
-                <div *ngFor="let ingredient of getIngredientsControls(); let i = index">
-                  <input type="text" class="form-control mb-2" [formControlName]="i" placeholder="Ingredient">
-                </div>
-              </div>
-              <!-- Instructions -->
-              <div formArrayName="instructions">
-                <div *ngFor="let instruction of getInstructionsControls(); let i = index">
-                  <input type="text" class="form-control mb-2" [formControlName]="i" placeholder="Instruction">
-                </div>
-              </div>
-              <div class="mb-3">
-                <label for="cuisine" class="form-label">Cuisine</label>
-                <input type="text" class="form-control" id="cuisine" formControlName="cuisine">
-              </div>
-              <div class="mb-3">
-                <label for="cookingTime" class="form-label">Cooking Time</label>
-                <input type="text" class="form-control" id="cookingTime" formControlName="cookingTime">
-              </div>
-              <div class="mb-3">
-                <label for="createdAt" class="form-label">Created At</label>
-                <input type="text" class="form-control" id="createdAt" formControlName="createdAt">
-              </div>
-              <div class="mb-3">
-                <label for="photoURL" class="form-label">Photo URL</label>
-                <input type="text" class="form-control" id="photoURL" formControlName="photoURL">
-              </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-          </div>
+            </div>
+            <div class="mb-3">
+              <label for="cuisine" class="form-label">Cuisine</label>
+              <input type="text" class="form-control" id="cuisine" formControlName="cuisine">
+            </div>
+            <div class="mb-3">
+              <label for="cookingTime" class="form-label">Cooking Time</label>
+              <input type="text" class="form-control" id="cookingTime" formControlName="cookingTime">
+            </div>
+            <div class="mb-3">
+              <label for="createdAt" class="form-label">Created At</label>
+              <input type="text" class="form-control" id="createdAt" formControlName="createdAt">
+            </div>
+            <div class="mb-3">
+              <label for="photoURL" class="form-label">Upload Image</label>
+              <input type="file" class="form-control" id="photoURL" (change)="onImageSelected($event)">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
         </div>
       </div>
-      <div class="col"></div>
     </div>
+    <div class="col"></div>
   </div>
+</div>
