@@ -1,10 +1,20 @@
 <div class="container">
+  <h2 class="text-2xl font-bold mb-4">Embark on a Journey</h2>
+  <div class="flex justify-between">
+    <div class="text-gray-600 cursor-pointer hover:text-blue-500">ALL</div>
+    <div class="text-gray-600 cursor-pointer hover:text-blue-500">VEGAN</div>
+    <div class="text-gray-600 cursor-pointer hover:text-blue-500">BREAKFAST</div>
+    <div class="text-gray-600 cursor-pointer hover:text-blue-500">LUNCH</div>
+    <div class="text-gray-600 cursor-pointer hover:text-blue-500">DINNER</div>
+    <div class="text-gray-600 cursor-pointer hover:text-blue-500">DESSERT</div>
+    <div class="text-gray-600 cursor-pointer hover:text-blue-500">QUICK BITE!</div>
+  </div>
   <h2 class="text-2xl font-bold mb-4">Recipes</h2>
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
     <div class="transition-transform transform hover:scale-105 cursor-pointer duration-300 ease-in-out" *ngFor="let recipe of recipes">
       <div class="rounded-lg shadow-md overflow-hidden">
         <img [src]="recipe.photoURL" class="w-full h-40 object-cover" alt="Recipe Image">
-        <div class="p-4">
+        <div class="p-4" style="background-color: #FFFBF2;">
           <h5 class="text-lg font-bold mb-2">{{ recipe.title }}</h5>
           <p class="text-gray-600 mb-2">Cooking Time: {{ recipe.cookingTime }} minutes</p>
           <a [routerLink]="['/recipes', recipe.recipeId]" class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">View Recipe</a>

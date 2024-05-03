@@ -7,6 +7,7 @@ import { VerifyEmailComponent } from './component/verify-email/verify-email.comp
 import { ForgotPasswordComponent } from './component/forgot-password/forgot-password.component';
 import { RecipeListComponent } from './component/recipe-list/recipe-list.component';
 import { RecipeCreationComponent } from './component/recipe-creation/recipe-creation.component';
+import { RecipeDetailsComponent } from './component/recipe-details/recipe-details.component';
 
 const routes: Routes = [
   {path: '',redirectTo:'login',pathMatch:'full'},
@@ -16,7 +17,8 @@ const routes: Routes = [
   {path: 'varify-email', component : VerifyEmailComponent},
   {path: 'forgot-password', component : ForgotPasswordComponent},
   { path: 'recipes', component: RecipeListComponent },
-  { path: 'recipes/create', component: RecipeCreationComponent }
+  { path: 'recipes/create', component: RecipeCreationComponent },
+  { path: 'recipes/:id', component: RecipeDetailsComponent }, // Route for viewing a single recipe by its ID
 
 
 

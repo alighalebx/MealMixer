@@ -17,6 +17,7 @@ import { VerifyEmailComponent } from './component/verify-email/verify-email.comp
 import { RecipeListComponent } from './component/recipe-list/recipe-list.component';
 import { RecipeCreationComponent } from './component/recipe-creation/recipe-creation.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RecipeDetailsComponent } from './component/recipe-details/recipe-details.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     ForgotPasswordComponent,
     VerifyEmailComponent,
     RecipeListComponent,
-    RecipeCreationComponent
+    RecipeCreationComponent,
+    RecipeDetailsComponent
   ],
   imports: [
     BrowserModule,

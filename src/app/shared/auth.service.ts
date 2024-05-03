@@ -80,5 +80,4 @@ export class AuthService {
       alert('Something went wrong');
     });
   }
-
 }

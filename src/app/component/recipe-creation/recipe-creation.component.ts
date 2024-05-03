@@ -20,18 +20,44 @@ export class RecipeCreationComponent {
     private formBuilder: FormBuilder,
     private recipeService: RecipeService,
     private authService: AuthService,
-    private storage: AngularFireStorage // Inject AngularFireStorage
+    private storage: AngularFireStorage
   ) {
     this.recipeForm = this.formBuilder.group({
       title: ['', Validators.required],
-      ingredients: this.formBuilder.array([]),
-      instructions: this.formBuilder.array([]),
+      ingredients: this.formBuilder.array([this.createIngredient()]),
+      instructions: this.formBuilder.array([this.formBuilder.control('', Validators.required)]),
       cuisine: ['', Validators.required],
       cookingTime: ['', Validators.required],
       createdAt: ['', Validators.required],
       photoURL: ['']
     });
   }
+
+  createIngredient(): FormGroup {
+    return this.formBuilder.group({
+      name: ['', Validators.required],
+      quantity: ['', Validators.required]
+    });
+  }
+
+  addIngredient(): void {
+    (this.recipeForm.get('ingredients') as FormArray).push(this.createIngredient());
+  }
+
+  removeIngredient(index: number): void {
+    (this.recipeForm.get('ingredients') as FormArray).removeAt(index);
+  }
+
+  addInstruction(): void {
+    (this.recipeForm.get('instructions') as FormArray).push(this.formBuilder.control('', Validators.required));
+  }
+
+  removeInstruction(index: number): void {
+    (this.recipeForm.get('instructions') as FormArray).removeAt(index);
+  }
+
+  // ... rest of your component code ...
+
 
   onSubmit(): void {
     if (this.recipeForm.valid && this.selectedImage) {
