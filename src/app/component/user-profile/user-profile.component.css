@@ -1,0 +1,15 @@
+/* To make the background transparent */
+element {
+    background-color: transparent;
+  }
+  
+  /* Or, to reset the variable to its initial value */
+  :root {
+    --bs-body-bg: initial;
+  }
+  
+  /* Or, to unset the variable */
+  :root {
+    --bs-body-bg: unset;
+  }
+  

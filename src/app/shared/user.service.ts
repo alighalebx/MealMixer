@@ -16,4 +16,19 @@ export class UserService {
       map((user: any) => (user ? user.displayName : null))
     );
   }
+
+  // Follow a user
+  followUser(currentUserId: string, targetUserId: string): Promise<void> {
+    return this.firestore.doc(`users/${currentUserId}`).collection('following').doc(targetUserId).set({ followedAt: new Date() });
+  }
+
+  // Unfollow a user
+  unfollowUser(currentUserId: string, targetUserId: string): Promise<void> {
+    return this.firestore.doc(`users/${currentUserId}`).collection('following').doc(targetUserId).delete();
+  }
+
+  // Get list of users followed by the current user
+  getFollowingUsers(currentUserId: string): Observable<any[]> {
+    return this.firestore.collection(`users/${currentUserId}/following`).valueChanges();
+  }
 }

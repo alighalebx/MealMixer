@@ -3,7 +3,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { User } from '../model/user.interface';
-
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -79,5 +80,17 @@ export class AuthService {
       console.error('Error sending password reset email:', err);
       alert('Something went wrong');
     });
+  }
+  getCurrentUser(): Observable<any> {
+    return this.fireauth.authState.pipe(
+      switchMap(user => {
+        if (user) {
+          return this.firestore.doc<any>(`users/${user.uid}`).valueChanges();
+        } else {
+          // Return an Observable that emits null when user is not logged in
+          return of(null);
+        }
+      })
+    );
   }
 }

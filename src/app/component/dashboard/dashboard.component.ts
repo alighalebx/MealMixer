@@ -18,4 +18,7 @@ export class DashboardComponent {
     // Navigate to the recipe creation page, passing the user ID as a query parameter
     this.router.navigate(['recipes'], { queryParams: { authorId: this.auth.userId } });
   }
+  navigateToUserProfile() {
+    this.router.navigate(['profile', this.auth.userId]); // Navigate to user profile with userId as parameter
+  }
 }

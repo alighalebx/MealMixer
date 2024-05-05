@@ -18,6 +18,8 @@ import { RecipeListComponent } from './component/recipe-list/recipe-list.compone
 import { RecipeCreationComponent } from './component/recipe-creation/recipe-creation.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RecipeDetailsComponent } from './component/recipe-details/recipe-details.component';
+import { UserProfileComponent } from './component/user-profile/user-profile.component';
+import { FollowUsersComponent } from './component/follow-users/follow-users.component';
 
 
 @NgModule({
@@ -30,7 +32,9 @@ import { RecipeDetailsComponent } from './component/recipe-details/recipe-detail
     VerifyEmailComponent,
     RecipeListComponent,
     RecipeCreationComponent,
-    RecipeDetailsComponent
+    RecipeDetailsComponent,
+    UserProfileComponent,
+    FollowUsersComponent
   ],
   imports: [
     BrowserModule,

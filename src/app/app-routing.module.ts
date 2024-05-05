@@ -8,6 +8,8 @@ import { ForgotPasswordComponent } from './component/forgot-password/forgot-pass
 import { RecipeListComponent } from './component/recipe-list/recipe-list.component';
 import { RecipeCreationComponent } from './component/recipe-creation/recipe-creation.component';
 import { RecipeDetailsComponent } from './component/recipe-details/recipe-details.component';
+import { UserProfileComponent } from './component/user-profile/user-profile.component';
+import { FollowUsersComponent } from './component/follow-users/follow-users.component';
 
 const routes: Routes = [
   {path: '',redirectTo:'login',pathMatch:'full'},
@@ -19,7 +21,8 @@ const routes: Routes = [
   { path: 'recipes', component: RecipeListComponent },
   { path: 'recipes/create', component: RecipeCreationComponent },
   { path: 'recipes/:id', component: RecipeDetailsComponent }, // Route for viewing a single recipe by its ID
-
+  { path: 'profile/:userId', component: UserProfileComponent },
+  { path: 'follow-users', component: FollowUsersComponent },
 
 
 ];
