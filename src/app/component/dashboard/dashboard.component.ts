@@ -21,4 +21,10 @@ export class DashboardComponent {
   navigateToUserProfile() {
     this.router.navigate(['profile', this.auth.userId]); // Navigate to user profile with userId as parameter
   }
+  navigateToFollowUsers() {
+    // Navigate to the follow users page
+    this.router.navigate(['follow-users']);
+  }
+
+  
 }

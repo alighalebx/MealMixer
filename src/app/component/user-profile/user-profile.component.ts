@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { AuthService } from '../../shared/auth.service';
-import { RecipeService } from '../../shared/recipe.service';
+import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-user-profile',
@@ -9,19 +9,38 @@ import { RecipeService } from '../../shared/recipe.service';
   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
-  userData$: Observable<any> = of(null); // Initialize with null or an empty observable
-  userRecipes$: Observable<any[]> = of([]); // Initialize with an empty observable
+  userData$?: Observable<any>;
+  userRecipes$?: Observable<any[]>;
+  followersCount: number = 0;
+  followingCount: number = 0;
 
-  constructor(private authService: AuthService, private recipeService: RecipeService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private firestore: AngularFirestore
+  ) { }
 
   ngOnInit(): void {
-    // Call getCurrentUser() from AuthService and subscribe to the returned Observable
-    this.userData$ = this.authService.getCurrentUser();
+    // Retrieve user ID from route parameters
+    this.route.paramMap.subscribe(params => {
+      const userId = params.get('userId');
+      if (userId) {
+        // Fetch user data
+        this.userData$ = this.firestore.doc<any>(`users/${userId}`).valueChanges();
 
-    // Fetch recipes uploaded by the current user
-    this.authService.getCurrentUser().subscribe(user => {
-      if (user) {
-        this.userRecipes$ = this.recipeService.getRecipesByUserId(user.uid);
+        // Fetch recipes uploaded by the user
+        this.userRecipes$ = this.firestore.collection<any>(`recipes`, ref => ref.where('userId', '==', userId)).valueChanges();
+
+        // Fetch followers count
+        this.firestore.doc<any>(`users/${userId}`).valueChanges()
+          .subscribe((userDoc: any) => {
+            this.followersCount = userDoc.followers ? userDoc.followers.length : 0; // Update followers count
+          });
+
+        // Fetch following count
+        this.firestore.collection(`users/${userId}/following`).valueChanges()
+          .subscribe(following => {
+            this.followingCount = following.length; // Update following count
+          });
       }
     });
   }
