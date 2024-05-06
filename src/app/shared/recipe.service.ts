@@ -61,8 +61,14 @@ export class RecipeService {
       ref.where('cookingTime', '<=', maxCookingTime)
     ).valueChanges({ idField: 'recipeId' });
   }
+  getLikeCountForRecipe(recipeId: string): Observable<number> {
+    return this.firestore.collection<Like>('likes', ref =>
+      ref.where('recipeId', '==', recipeId)
+    ).valueChanges().pipe(
+      map(likes => likes.length) // Count the number of likes
+    );
+  }
 
-  // Like a recipe
   likeRecipe(recipeId: string, userId: string): Promise<void> {
     const like: Like = { userId, recipeId };
     return this.firestore.collection('likes').doc(`${userId}_${recipeId}`).set(like);
@@ -80,7 +86,6 @@ export class RecipeService {
         map(like => !!like)
       );
   }
-
   // Comment on a recipe
   commentOnRecipe(recipeId: string, comment: string, userId: string): Promise<DocumentReference<Comment>> {
     const commentData: Comment = {

@@ -12,5 +12,7 @@ export interface Recipe {
     cuisine: string;
     cookingTime: number;
     createdAt: Date;
+    likeCount?: number; // Add likeCount property
+    isLiked?: boolean; // Add isLiked property
   }
   

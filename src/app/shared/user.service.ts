@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, map } from 'rxjs';
 import firebase from 'firebase/compat/app'; // Import firebase from compat
+import { User } from '../model/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +15,21 @@ export class UserService {
     return this.firestore.collection('users').valueChanges();
   }
 
+  getUserById(userId: string): Observable<User | null> {
+    return this.firestore.doc<User>(`users/${userId}`).valueChanges().pipe(
+      map(user => user || null)
+    );
+  }
   // Get user name by ID
   getUserNameById(userId: string): Observable<string | null> {
     return this.firestore.doc<any>(`users/${userId}`).valueChanges().pipe(
       map((user: any) => (user ? user.displayName : null))
+    );
+  }
+
+  getUserProfilePicture(userId: string): Observable<string | null> {
+    return this.firestore.doc<any>(`users/${userId}`).valueChanges().pipe(
+      map((user: any) => (user ? user.profilePictureUrl : null))
     );
   }
 

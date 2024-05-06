@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Recipe } from '../../model/recipe.interface';
 import { RecipeService } from '../../shared/recipe.service';
-import { UserService } from '../../shared/user.service'; // Import UserService
+import { UserService } from '../../shared/user.service';
+import { Comment } from '../../model/comment.interface'; // Import Comment interface
+import { AuthService } from '../../shared/auth.service';
+import { User } from '../../model/user.interface'; // Import User interface
+import { Timestamp } from 'firebase/firestore'; // Import Timestamp from Firestore
 
 @Component({
   selector: 'app-recipe-details',
@@ -13,32 +17,95 @@ export class RecipeDetailsComponent implements OnInit {
   recipeId: string | undefined;
   recipe: Recipe | undefined;
   authorName: string | null = null;
+  comments: Comment[] = []; // Array to store comments
+  newComment: string = ''; // Variable to store new comment text
+  users: { [key: string]: User } = {}; // Object to store user details
 
   constructor(
     private route: ActivatedRoute,
     private recipeService: RecipeService,
-    private userService: UserService // Inject UserService
+    private userService: UserService,
+    private authService: AuthService
+
+
   ) { }
 
   ngOnInit(): void {
-    // Get the recipeId from the route parameters
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
         this.recipeId = id;
-        // Fetch recipe details using recipeId
-        this.recipeService.getRecipeById(this.recipeId).subscribe(recipe => {
-          this.recipe = recipe;
-          if (recipe) {
-            // Fetch author's name based on authorId
-            this.userService.getUserNameById(recipe.authorId).subscribe(name => {
-              this.authorName = name;
-            });
-          }
-        });
+        this.fetchRecipeDetails();
       } else {
         console.error('Recipe ID is null');
       }
     });
   }
+
+  fetchRecipeDetails(): void {
+    this.recipeService.getRecipeById(this.recipeId!).subscribe(recipe => {
+      this.recipe = recipe;
+      if (recipe) {
+        this.userService.getUserNameById(recipe.authorId).subscribe(name => {
+          this.authorName = name;
+        });
+        this.fetchComments();
+      }
+    });
+  }
+
+  fetchComments(): void {
+    this.recipeService.getCommentsForRecipe(this.recipeId!).subscribe(comments => {
+      this.comments = comments.map(comment => {
+        // Convert Timestamp to Date if necessary
+        const createdAt = comment.createdAt instanceof Timestamp
+          ? comment.createdAt.toDate()
+          : comment.createdAt;
+        return {
+          ...comment,
+          createdAt: createdAt
+        };
+      });
+      this.fetchUsersForComments();
+    });
+  }
+  
+  fetchUsersForComments(): void {
+    this.comments.forEach(comment => {
+      this.userService.getUserById(comment.userId).subscribe(user => {
+        if (user) {
+          this.users[comment.userId] = user;
+        }
+      });
+    });
+  }
+
+  // Method to submit a new comment
+  submitComment(): void {
+    if (this.newComment.trim() !== '') {
+      // Check if the user is logged in or not
+      // If logged in, add the comment
+      // If not logged in, redirect to the login page or display a message
+      this.authService.getCurrentUser().subscribe(user => {
+        if (user) {
+          const userId = user.uid; // Use the actual user ID obtained from the AuthService
+          this.recipeService.commentOnRecipe(this.recipeId!, this.newComment, userId).then(() => {
+            // Clear the new comment text field
+            this.newComment = '';
+            // Refresh comments
+            this.recipeService.getCommentsForRecipe(this.recipeId!).subscribe(comments => {
+              this.comments = comments;
+            });
+          }).catch(error => {
+            console.error('Error adding comment:', error);
+          });
+        } else {
+          
+          console.log('User is not logged in. Redirecting to login page...');
+        }
+      });
+    }
+  }
+
+ 
 }

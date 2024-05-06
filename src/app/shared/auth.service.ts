@@ -17,20 +17,22 @@ export class AuthService {
     private router: Router
   ) {}
 
-  // Login function
+
   login(email: string, password: string) {
     this.fireauth.signInWithEmailAndPassword(email, password).then((userCredential) => {
       // Store the user ID after successful login
       if (userCredential.user) {
         this.userId = userCredential.user.uid;
       }
+      // Update userId immediately after successful login
+      this.userId = userCredential.user?.uid || '';
       this.router.navigate(['dashboard']);
     }, err => {
       alert("Something went wrong");
       this.router.navigate(['login']);
     });
   }
-
+  
   // Register function
   register(email: string, password: string, user: User) {
     this.fireauth.createUserWithEmailAndPassword(email, password).then(res => {
