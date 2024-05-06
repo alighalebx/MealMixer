@@ -1,32 +1,51 @@
-<div class="container">
-  <h2 class="text-2xl font-bold mb-4">Embark on a Journey</h2>
-  <div class="flex justify-between">
-    <div class="text-gray-600 cursor-pointer hover:text-blue-500">ALL</div>
-    <div class="text-gray-600 cursor-pointer hover:text-blue-500">VEGAN</div>
-    <div class="text-gray-600 cursor-pointer hover:text-blue-500">BREAKFAST</div>
-    <div class="text-gray-600 cursor-pointer hover:text-blue-500">LUNCH</div>
-    <div class="text-gray-600 cursor-pointer hover:text-blue-500">DINNER</div>
-    <div class="text-gray-600 cursor-pointer hover:text-blue-500">DESSERT</div>
-    <div class="text-gray-600 cursor-pointer hover:text-blue-500">QUICK BITE!</div>
+<div class="container" style="padding-top: 128px;"> 
+  <h2 class="flex items-center justify-center text-2xl font-bold mb-4">Embark on a Journey</h2>
+  <div class="flex justify-center space-x-4 flex-wrap"> <!-- Added flex-wrap for responsiveness -->
+    <button class="bg-figmaPri hover:bg-Lime-500 text-gray-400 font-semibold py-2 px-4 rounded-full">
+      ALL
+    </button>
+    <button class="bg-transparent hover:bg-blue-500 text-gray-400 font-semibold hover:text-gray-900 py-2 px-4 border border-blue-500 hover:border-transparent rounded-full">
+      VEGAN
+    </button>
+    <button class="bg-transparent hover:bg-blue-500 text-gray-400 font-semibold hover:text-gray-900 py-2 px-4 border border-blue-500 hover:border-transparent rounded-full">
+      BREAKFAST
+    </button>
+    <button class="bg-transparent hover:bg-blue-500 text-gray-400 font-semibold hover:text-gray-900 py-2 px-4 border border-blue-500 hover:border-transparent rounded-full">
+      LUNCH
+    </button>
+    <button class="bg-transparent hover:bg-blue-500 text-gray-400 font-semibold hover:text-gray-900 py-2 px-4 border border-blue-500 hover:border-transparent rounded-full">
+      DINNER
+    </button>
+    <button class="bg-transparent hover:bg-blue-500 text-gray-400 font-semibold hover:text-gray-900 py-2 px-4 border border-blue-500 hover:border-transparent rounded-full">
+      DESSERT
+    </button>
+    <button class="bg-transparent hover:bg-blue-500 text-gray-400 font-semibold hover:text-gray-900 py-2 px-4 border border-blue-500 hover:border-transparent rounded-full">
+      QUICK BITE!
+    </button>
   </div>
-  <h2 class="text-2xl font-bold mb-4">Recipes</h2>
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-    <div class="transition-transform transform hover:scale-105 duration-300 ease-in-out" *ngFor="let recipe of recipes">
-      <div class="rounded-lg shadow-md overflow-hidden">
-        <img [src]="recipe.photoURL" class="w-full h-40 object-cover" alt="Recipe Image">
-        <div class="p-4" style="background-color: #FFFBF2;">
-          <h5 class="text-lg font-bold mb-2">{{ recipe.title }}</h5>
-          <p class="text-gray-600 mb-2">Cooking Time: {{ recipe.cookingTime }} minutes</p>
-          <a [routerLink]="['/recipes', recipe.recipeId]" class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">View Recipe</a>
-          <p class="mb-2"></p>
-          <button (click)="toggleLike(recipe)" class="like-button flex items-center space-x-1 rounded-full text-gray-400 hover:text-rose-600 bg-gray-700 hover:bg-rose-50 py-1 px-2 text-xs font-medium">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current hover:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">              <path *ngIf="recipe.isLiked; else unlikeIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              <ng-template #unlikeIcon>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </ng-template>
-            </svg>
-            <p class="font-semibold text-xs ml-2" style="margin-left: 20px;">{{ recipe.likeCount }}</p>
-          </button>
+  <div>
+    <h2 class="text-2xl font-bold mb-4">Recipes</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4 px-4"> <!-- Changed grid column count to 3 for small screens and above -->
+      <div class="transition-transform transform hover:scale-105 duration-300 ease-in-out" *ngFor="let recipe of recipes">
+        <div class="rounded-lg shadow-md overflow-hidden">
+          <img [src]="recipe.photoURL" class="w-full h-60 object-cover" alt="Recipe Image">
+          <div class="p-4" style="background-color: #FFFBF2;">
+            <h5 class="text-lg font-bold mb-2">{{ recipe.title }}</h5>
+            <p class="text-gray-600 mb-2">Cooking Time: {{ recipe.cookingTime }} minutes</p>
+            <p class="mb-2"></p>
+            <div class="flex justify-between items-center">
+            <button (click)="toggleLike(recipe)" class="like-button flex items-center space-x-1 rounded-full text-gray-400 hover:text-rose-600 bg-gray-700 hover:bg-rose-50 py-1 px-2 text-xs font-medium">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current hover:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path *ngIf="recipe.isLiked; else unlikeIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                <ng-template #unlikeIcon>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </ng-template>
+              </svg>
+              <p class="font-semibold text-xs ml-2" style="margin-left: 20px;">{{ recipe.likeCount }}</p>
+            </button>
+            <a [routerLink]="['/recipes', recipe.recipeId]" class="bg-transparent hover:bg-gray-900 text-gray-600 font-semibold hover:text-gray-900 py-2 px-4 border border-gray-900 hover:border-transparent rounded-full">View Recipe</a>
+          </div>
+          </div>
         </div>
       </div>
     </div>
