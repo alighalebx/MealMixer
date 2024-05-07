@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
@@ -16,6 +16,7 @@ export class UserProfileComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private firestore: AngularFirestore
   ) { }
 
@@ -43,5 +44,8 @@ export class UserProfileComponent implements OnInit {
           });
       }
     });
+  }
+  navigateToMealPlanning(): void {
+    this.router.navigate(['/meal-planning']); // Navigate to the meal planning page
   }
 }

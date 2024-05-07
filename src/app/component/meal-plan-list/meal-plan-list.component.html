@@ -1,0 +1,24 @@
+<div class="container mx-auto">
+    <!-- Date Picker -->
+    <div class="mb-4">
+        <label for="date" class="block text-sm font-medium text-gray-700">Select Date:</label>
+        <input type="date" id="date" name="date" [(ngModel)]="selectedDate" (change)="onDateChange()" class="mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block w-full">
+      </div>  
+  
+    <!-- Meal Plans -->
+    <h2 class="text-2xl font-bold my-4">Meal Plans</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
+      <!-- Loop through meal plans and display each one -->
+      <div *ngFor="let mealPlan of mealPlans" class="rounded-lg shadow-md overflow-hidden bg-white">
+        <div class="p-4">
+          <h3 class="text-xl font-semibold mb-2">{{ mealPlan.date }}</h3>
+          <!-- Loop through meals in the meal plan and display each one -->
+          <div *ngFor="let meal of mealPlan.meals" class="mb-2">
+            <p class="text-lg font-semibold">{{ meal.name }}</p>
+            <p class="text-gray-600">{{ getRecipeTitle(meal.recipeId) }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

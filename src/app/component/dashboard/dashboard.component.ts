@@ -25,6 +25,14 @@ export class DashboardComponent {
     // Navigate to the follow users page
     this.router.navigate(['follow-users']);
   }
+  navigateToMealPlanning() {
+    // Navigate to the follow users page
+    this.router.navigate(['meal-planning']);
+  }
+  navigateToMealPlanningList() {
+    // Navigate to the follow users page
+    this.router.navigate(['selected-meal-planning']);
+  }
 
   
 }

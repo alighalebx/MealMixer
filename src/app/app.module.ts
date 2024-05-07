@@ -20,8 +20,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RecipeDetailsComponent } from './component/recipe-details/recipe-details.component';
 import { UserProfileComponent } from './component/user-profile/user-profile.component';
 import { FollowUsersComponent } from './component/follow-users/follow-users.component';
-
-
+import { MealPlanningComponent } from './component/meal-planning/meal-planning.component';
+import { MealSelectionComponent } from './component/meal-selection/meal-selection.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MealPlanListComponent } from './component/meal-plan-list/meal-plan-list.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +40,10 @@ import { FollowUsersComponent } from './component/follow-users/follow-users.comp
     RecipeCreationComponent,
     RecipeDetailsComponent,
     UserProfileComponent,
-    FollowUsersComponent
+    FollowUsersComponent,
+    MealPlanningComponent,
+    MealSelectionComponent,
+    MealPlanListComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,9 +51,15 @@ import { FollowUsersComponent } from './component/follow-users/follow-users.comp
     AngularFireModule.initializeApp(firebase),
     AngularFirestoreModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatSnackBarModule,
+    BrowserAnimationsModule
+    
   ],
-  providers: [],
+  providers: [MatDatepickerModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

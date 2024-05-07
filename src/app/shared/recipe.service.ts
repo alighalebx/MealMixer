@@ -5,6 +5,8 @@ import { map } from 'rxjs/operators';
 import { Recipe } from '../model/recipe.interface';
 import { Like } from '../model/like.interface';
 import { Comment } from '../model/comment.interface';
+import { MealPlan } from '../model/meal-plan.interface';
+import { Meal } from '../model/meal.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -110,4 +112,27 @@ export class RecipeService {
       ref.where('authorId', '==', userId)
     ).valueChanges({ idField: 'recipeId' });
   }
+
+
+
+
+  //meals
+
+  createMealPlan(userId: string, date: string, meals: Meal[]): Promise<void> {
+    const mealPlan: MealPlan = { userId, date, meals };
+    return this.firestore.collection<MealPlan>('meal-plans').doc(`${userId}_${date}`).set(mealPlan, { merge: true });
+  }
+  
+
+  getMealPlan(userId: string, date: string): Observable<MealPlan | undefined> {
+    return this.firestore.doc<MealPlan>(`meal-plans/${userId}_${date}`).valueChanges();
+  }
+  updateMealPlan(userId: string, date: string, meals: Meal[]): Promise<void> {
+    const mealPlan: MealPlan = { userId, date, meals };
+    return this.firestore.collection<MealPlan>('meal-plans').doc(`${userId}_${date}`).set(mealPlan);
+  }
+  deleteMealPlan(userId: string, date: string): Promise<void> {
+    return this.firestore.collection('meal-plans').doc(`${userId}_${date}`).delete();
+  }
+      
 }

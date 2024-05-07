@@ -10,6 +10,8 @@ import { RecipeCreationComponent } from './component/recipe-creation/recipe-crea
 import { RecipeDetailsComponent } from './component/recipe-details/recipe-details.component';
 import { UserProfileComponent } from './component/user-profile/user-profile.component';
 import { FollowUsersComponent } from './component/follow-users/follow-users.component';
+import { MealPlanningComponent } from './component/meal-planning/meal-planning.component';
+import { MealPlanListComponent } from './component/meal-plan-list/meal-plan-list.component';
 
 const routes: Routes = [
   {path: '',redirectTo:'login',pathMatch:'full'},
@@ -23,7 +25,8 @@ const routes: Routes = [
   { path: 'recipes/:id', component: RecipeDetailsComponent }, // Route for viewing a single recipe by its ID
   { path: 'profile/:userId', component: UserProfileComponent },
   { path: 'follow-users', component: FollowUsersComponent },
-
+  { path: 'meal-planning', component: MealPlanningComponent},
+  { path: 'selected-meal-planning', component: MealPlanListComponent}
 
 ];
 
