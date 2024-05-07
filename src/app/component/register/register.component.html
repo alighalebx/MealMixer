@@ -1,41 +1,42 @@
-<!-- register.component.html -->
-<div class="container-fluid">
-    <div class="row mt-5">
-        <div class="col"></div>
-        <div class="col-4">
-            <div class="card shadow">
-                <div class="card-body">
-                    <form>
-                        <div class="mb-3">
-                            <h4 class="text-dark text-muted">Register</h4>
-                        </div>
-                        <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Email</label>
-                            <input type="email" class="form-control" name="email" [(ngModel)]="email">
-                        </div>
-                        <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password" [(ngModel)]="password">
-                        </div>
-                        <div class="mb-3">
-                            <label for="exampleInputUsername" class="form-label">Username</label>
-                            <input type="text" class="form-control" name="username" [(ngModel)]="username">
-                        </div>
-                        <div class="mb-3">
-                            <label for="exampleInputImage" class="form-label">Profile Image</label>
-                            <input type="file" class="form-control" name="photoURL" (change)="onFileSelected($event)">
-                            <img *ngIf="selectedFile" [src]="previewImage" alt="Selected Image" class="img-fluid mt-2">
-                        </div>
-                        <button type="button" class="btn btn-info" (click)="register()">Register</button>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <a href="/login" style="text-decoration: none;">Have an account ? <span class="text-danger">Login</span></a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+<div class="font-[sans-serif] text-[#333] bg-transparent flex items-center justify-center md:h-screen p-4">
+    <div class="shadow-[0_2px_16px_-3px_rgba(6,81,237,0.3)] max-w-6xl rounded-md p-6">
+      <div class="grid md:grid-cols-2 items-center gap-8">
+        <form class="max-w-md w-full mx-auto">
+          <div class="mb-12">
+            <h3 class="text-4xl font-extrabold text-primry3">Register</h3>
+          </div>
+          <div class="mb-8">
+            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+            <div class="relative">
+              <input id="email" name="email" type="email" class="w-full text-sm border-b border-gray-300 focus:border-primry3bold px-2 py-3 outline-none" placeholder="Enter email" [(ngModel)]="email" />
             </div>
+          </div>
+          <div class="mb-8">
+            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+            <div class="relative">
+              <input id="password" name="password" type="password" class="w-full text-sm border-b border-gray-300 focus:border-primry3bold px-2 py-3 outline-none" placeholder="Enter password" [(ngModel)]="password" />
+            </div>
+          </div>
+          <div class="mb-8">
+            <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+            <div class="relative">
+              <input id="username" name="username" type="text" class="w-full text-sm border-b border-gray-300 focus:border-primry3bold px-2 py-3 outline-none" placeholder="Enter username" [(ngModel)]="username" />
+            </div>
+          </div>
+          <div class="mb-8">
+            <label for="photoURL" class="block text-sm font-medium text-gray-700">Profile Image</label>
+            <div class="relative">
+              <input id="photoURL" name="photoURL" type="file" class="w-full text-sm border-b border-gray-300 focus:border-primry3bold px-2 py-3 outline-none" (change)="onFileSelected($event)">
+              <img *ngIf="selectedFile" [src]="previewImage" alt="Selected Image" class="mt-2">
+            </div>
+          </div>
+          <button type="button" class="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded-full text-white bg-primry3 hover:bg-primry3bold focus:outline-none" (click)="register()">Register</button>
+          <p class="text-sm text-center mt-8">Have an account? <a href="/login" class="text-primry3 font-semibold hover:underline ml-1 whitespace-nowrap">Login here</a></p>
+        </form>
+        <div class="max-md:order-1">
+          <img src="https://i.ibb.co/HgXSLGz/diet.png" class="lg:w-11/12 w-full object-cover" alt="register-image" />
         </div>
-        <div class="col"></div>
+      </div>
     </div>
-</div>
+  </div>
+  

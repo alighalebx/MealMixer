@@ -35,9 +35,18 @@ export class MealPlanningComponent implements OnInit {
 
   selectMeal(recipe: Recipe): void {
     if (!this.selectedMealType) return;
-    this.mealPlan[this.selectedMealType] = recipe;
-    this.selectedRecipes[recipe.recipeId] = true; // Mark the recipe as selected
-  }
+
+    // If the recipe is already selected, unselect it
+    if (this.mealPlan[this.selectedMealType] === recipe) {
+      delete this.mealPlan[this.selectedMealType];
+      delete this.selectedRecipes[recipe.recipeId];
+    } else {
+      // Otherwise, select the recipe
+      this.mealPlan[this.selectedMealType] = recipe;
+      this.selectedRecipes[recipe.recipeId] = true; // Mark the recipe as selected
+    }
+}
+
 
   saveMealPlan(): void {
     if (!this.selectedDate || !this.authService.userId) return;

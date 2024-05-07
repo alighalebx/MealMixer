@@ -68,7 +68,7 @@
             <!-- Add any other sections or widgets here -->
             <!-- Inside the UserProfileComponent template -->
             <div class="pt-6 text-base font-bold flex items-center justify-center lg:justify-start">
-                <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" (click)="navigateToMealPlanning()">Meal Planning</button>
+                <button class="bg-primry3 text-white px-4 py-2 rounded hover:bg-primry3bold" (click)="navigateToMealPlanning()">Meal Planning</button>
             </div>
 
         </div>
@@ -83,7 +83,7 @@
                     <div class="p-4" style="background-color: #FFFBF2;">
                         <h5 class="text-lg font-bold mb-2">{{ recipe.title }}</h5>
                         <p class="text-gray-600 mb-2">Cooking Time: {{ recipe.cookingTime }} minutes</p>
-                        <a [routerLink]="['/recipes', recipe.recipeId]" class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">View Recipe</a>
+                        <a [routerLink]="['/recipes', recipe.recipeId]" class="inline-block bg-primry3 text-white px-4 py-2 rounded hover:bg-primry3bold">View Recipe</a>
                     </div>
                 </div>
             </div>

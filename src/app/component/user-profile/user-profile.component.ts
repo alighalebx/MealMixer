@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { RecipeService } from '../../shared/recipe.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -17,7 +18,8 @@ export class UserProfileComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private recipeService: RecipeService
   ) { }
 
   ngOnInit(): void {
@@ -29,8 +31,12 @@ export class UserProfileComponent implements OnInit {
         this.userData$ = this.firestore.doc<any>(`users/${userId}`).valueChanges();
 
         // Fetch recipes uploaded by the user
-        this.userRecipes$ = this.firestore.collection<any>(`recipes`, ref => ref.where('userId', '==', userId)).valueChanges();
-
+        // this.userRecipes$ = this.firestore.collection<any>(`recipes`, ref => ref.where('userId', '==', userId)).valueChanges();
+        
+         
+          this.userRecipes$ = this.recipeService.getRecipesByUserId(userId);
+          
+        console.log(this.userRecipes$);
         // Fetch followers count
         this.firestore.doc<any>(`users/${userId}`).valueChanges()
           .subscribe((userDoc: any) => {

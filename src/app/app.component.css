@@ -1,11 +1,14 @@
 /* app-layout.component.css */
 
-.wrapper {
+  .wrapper {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     background-color: #F0EBE1;
   }
+  
+
+  
   
   .content {
     flex: 1;
