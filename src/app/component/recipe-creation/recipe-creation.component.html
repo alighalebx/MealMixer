@@ -1,58 +1,52 @@
-<div class="container-fluid mt-5">
-  <div class="row">
-    <div class="col"></div>
-    <div class="col-8">
-      <div class="card shadow">
-        <div class="card-body">
-          <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
-            <div class="mb-3">
-              <h4 class="text-dark text-muted">Create Recipe</h4>
-            </div>
-            <div class="mb-3">
-              <label for="title" class="form-label">Title</label>
-              <input type="text" class="form-control" id="title" formControlName="title">
-            </div>
-            <div formArrayName="ingredients">
-              <div *ngFor="let ingredientCtrl of getIngredientsControls(); let i = index" class="mb-2" [formGroupName]="i">
-                <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Ingredient Name" formControlName="name">
-                  <input type="text" class="form-control" placeholder="Quantity" formControlName="quantity">
-                  <button class="btn btn-danger" type="button" (click)="removeIngredient(i)">Remove</button>
-                </div>
-              </div>
-              <button class="btn btn-primary" type="button" (click)="addIngredient()">Add Ingredient</button>
-            </div>
-            <!-- Instructions -->
-            <div formArrayName="instructions">
-              <div *ngFor="let instructionCtrl of getInstructionsControls(); let i = index" class="mb-2">
-                <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Instruction" [formControlName]="i">
-                  <button class="btn btn-danger" type="button" (click)="removeInstruction(i)">Remove</button>
-                </div>
-              </div>
-              <button class="btn btn-primary" type="button" (click)="addInstruction()">Add Instruction</button>
-            </div>
-            <div class="mb-3">
-              <label for="cuisine" class="form-label">Cuisine</label>
-              <input type="text" class="form-control" id="cuisine" formControlName="cuisine">
-            </div>
-            <div class="mb-3">
-              <label for="cookingTime" class="form-label">Cooking Time</label>
-              <input type="text" class="form-control" id="cookingTime" formControlName="cookingTime">
-            </div>
-            <div class="mb-3">
-              <label for="createdAt" class="form-label">Created At</label>
-              <input type="text" class="form-control" id="createdAt" formControlName="createdAt">
-            </div>
-            <div class="mb-3">
-              <label for="photoURL" class="form-label">Upload Image</label>
-              <input type="file" class="form-control" id="photoURL" (change)="onImageSelected($event)">
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
+<div class="container mx-auto mt-24 flex justify-center ">
+  <div class="w-full md:w-3/4 lg:w-1/2">
+    <div class="bg-white shadow-md rounded-md p-6">
+      <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+        <div class="mb-6">
+          <h4 class="text-2xl text-gray-800">Create Recipe</h4>
         </div>
+          <div class="mb-6">
+            <label for="title" class="block text-gray-700">Title</label>
+            <input type="text" class="form-input mt-1 block w-full border-gray-300 rounded-md" id="title" formControlName="title">
+          </div>
+          <div formArrayName="ingredients">
+            <div *ngFor="let ingredientCtrl of getIngredientsControls(); let i = index" class="mb-4" [formGroupName]="i">
+              <div class="flex items-center mb-2">
+                <input type="text" class="form-input w-1/2 mr-2 border-gray-300 rounded-md" placeholder="Ingredient Name" formControlName="name">
+                <input type="text" class="form-input w-1/4 mr-2 border-gray-300 rounded-md" placeholder="Quantity" formControlName="quantity">
+                <button class="bg-red-500 text-white px-3 py-1 rounded-md" type="button" (click)="removeIngredient(i)">Remove</button>
+              </div>
+            </div>
+            <button class="bg-figmaPri text-white px-3 py-1 rounded-md" type="button" (click)="addIngredient()">Add Ingredient</button>
+          </div>
+          <!-- Instructions -->
+          <div formArrayName="instructions" class="mt-6">
+            <div *ngFor="let instructionCtrl of getInstructionsControls(); let i = index" class="mb-4">
+              <div class="flex items-center">
+                <input type="text" class="form-input w-full mr-2 border-gray-300 rounded-md" placeholder="Instruction" [formControlName]="i">
+                <button class="bg-red-500 text-white px-3 py-1 rounded-md" type="button" (click)="removeInstruction(i)">Remove</button>
+              </div>
+            </div>
+            <button class="bg-figmaPri text-white px-3 py-1 rounded-md" type="button" (click)="addInstruction()">Add Instruction</button>
+          </div>
+          <div class="mb-6">
+            <label for="cuisine" class="block text-gray-700">Cuisine</label>
+            <input type="text" class="form-input mt-1 block w-full border-gray-300 rounded-md" id="cuisine" formControlName="cuisine">
+          </div>
+          <div class="mb-6">
+            <label for="cookingTime" class="block text-gray-700">Cooking Time</label>
+            <input type="text" class="form-input mt-1 block w-full border-gray-300 rounded-md" id="cookingTime" formControlName="cookingTime">
+          </div>
+          <div class="mb-6">
+            <label for="createdAt" class="block text-gray-700">Created At</label>
+            <input type="text" class="form-input mt-1 block w-full border-gray-300 rounded-md" id="createdAt" formControlName="createdAt">
+          </div>
+          <div class="mb-6">
+            <label for="photoURL" class="block text-gray-700">Upload Image</label>
+            <input type="file" class="form-input mt-1 block w-full border-gray-300 rounded-md" id="photoURL" (change)="onImageSelected($event)">
+          </div>
+          <button type="submit" class="bg-figmaPri text-white px-4 py-2 rounded-md">Submit</button>
+        </form>
       </div>
     </div>
-    <div class="col"></div>
   </div>
-</div>

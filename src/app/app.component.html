@@ -3,15 +3,57 @@
 
   
   
-  
+  <nav class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b-4 border-gray-900 dark:border-gray-600 border-black">
+    <div class="max-w-screen-xl flex items-center justify-between mx-auto px-4 py-2">
+      <div class="flex items-center space-x-3 rtl:space-x-reverse">
+        <a href="/dashboard" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <img src="https://i.postimg.cc/Pqm71r6x/chef-1.png" class="h-6" alt="chef">
+        <span class="self-center text-lg font-semibold whitespace-nowrap dark:text-white">MealMixer</span>
+      </a>
+      </div>
+      <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        <button type="button" class="text-white bg-primry3 hover:bg-primry3bold focus:ring-4 focus:outline-none focus:ring-orange-500 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-primry3 dark:hover:bg-primry3 dark:focus:bg-primry3bold" (click)="navigateToCreateRecipe()">Get started</button>
+        <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-1 w-8 h-8 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+          </svg>
+        </button>
+      </div>
+      <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
+        <ul class="flex flex-col p-2 md:p-0 mt-2 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-6 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+          <li>
+            <button type="button" class="block py-1 px-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primry3bold md:p-0 md:dark:hover:text-primry3 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" (click)="navigateToCreateRecipe()">Create Recipe</button>
+          </li>
+          <li>
+            <button type="button" class="block py-1 px-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primry3bold md:p-0 md:dark:hover:text-primry3 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" (click)="navigateToListRecipe()">List Recipes</button>
+          </li>
+          <li>
+            <button type="button" class="block py-1 px-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primry3bold md:p-0 md:dark:hover:text-primry3 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" (click)="navigateToUserProfile()">User Profile</button>
+          </li>
+          <li>
+            <button type="button" class="block py-1 px-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primry3bold md:p-0 md:dark:hover:text-primry3 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" (click)="navigateToFollowUsers()">Follow Users</button>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </nav>
+
   <!-- Your header content here if applicable -->
   
-  <div class="content">
+  <div class="content" style="margin-bottom: 20px;">
     <router-outlet></router-outlet> <!-- This is where your other components/pages will be injected -->
   </div>
   
-  <footer>
-    <!-- Your footer content here -->
-    This is the footer.
+
+
+
+  <footer class="bg-white shadow-md">
+    <div class="max-w-7xl mx-auto py-2 px-4 lg:px-8">
+      <p class="text-center text-gray-500 text-xs">
+        ©2024 RECIPE & FOOD. All rights reserved.
+      </p>
+    </div>
   </footer>
 </div>

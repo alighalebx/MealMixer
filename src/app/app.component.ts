@@ -1,28 +1,40 @@
 import { Component } from '@angular/core';
-import { environment } from './../environments/environment';
 import { Router } from '@angular/router';
 import { AuthService } from './shared/auth.service';
-
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'] // Corrected the property name to 'styleUrls'
 })
 export class AppComponent {
-  constructor(private router: Router, private auth: AuthService) { }
+  title = 'MealMixer';
+
+  constructor(private router: Router, private auth: AuthService) {}
 
   navigateToCreateRecipe() {
-    this.router.navigate(['recipes/create'], { queryParams: { authorId: this.auth.userId } });
+    // Use take(1) to get the current userId just for this navigation
+    this.auth.userId$.pipe(take(1)).subscribe(authorId => {
+      this.router.navigate(['recipes/create'], { queryParams: { authorId } });
+    });
   }
+
   navigateToListRecipe() {
-    this.router.navigate(['recipes'], { queryParams: { authorId: this.auth.userId } });
+    // Use take(1) to get the current userId just for this navigation
+    this.auth.userId$.pipe(take(1)).subscribe(authorId => {
+      this.router.navigate(['recipes'], { queryParams: { authorId } });
+    });
   }
+
   navigateToUserProfile() {
-    this.router.navigate(['profile', this.auth.userId]); // Navigate to user profile with userId as parameter
+    // Use take(1) to get the current userId just for this navigation
+    this.auth.userId$.pipe(take(1)).subscribe(userId => {
+      this.router.navigate(['profile', userId]);
+    });
   }
+
   navigateToFollowUsers() {
     this.router.navigate(['follow-users']);
   }
-  title = 'MealMixer';
 }

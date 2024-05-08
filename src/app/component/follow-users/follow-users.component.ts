@@ -4,6 +4,7 @@ import { UserService } from '../../shared/user.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { User } from '../../model/user.interface';
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-follow-users',
@@ -13,6 +14,7 @@ import { Router } from '@angular/router';
 export class FollowUsersComponent implements OnInit {
   users: User[] = []; // Array to store all users except the logged-in user
   followingUserIds: Set<string> = new Set(); // Set to store IDs of users being followed
+  currentUserId: string=''; // Store the current user's ID
 
   constructor(
     private userService: UserService,
@@ -22,53 +24,50 @@ export class FollowUsersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadFollowingUsers();
-    this.loadAllUsers();
+    // Subscribe to the userId$ observable to get the current userId
+    this.authService.userId$.pipe(take(1)).subscribe(id => {
+      this.currentUserId = id;
+      this.loadFollowingUsers();
+      this.loadAllUsers();
+    });
   }
 
   loadAllUsers() {
-    this.authService.getCurrentUser().subscribe(currentUser => {
-      if (currentUser) {
-        const currentUserId = currentUser.uid;
-        this.userService.getAllUsers().subscribe(allUsers => {
-          this.users = allUsers.filter(user => user.uid !== currentUserId);
-          // Initialize the following state for each user
-          this.users.forEach(user => {
-            user.isFollowing = this.followingUserIds.has(user.uid);
-          });
-        });
-      }
+    // Use the currentUserId obtained from the subscription
+    this.userService.getAllUsers().subscribe(allUsers => {
+      this.users = allUsers.filter(user => user.uid !== this.currentUserId);
+      // Initialize the following state for each user
+      this.users.forEach(user => {
+        user.isFollowing = this.followingUserIds.has(user.uid);
+      });
     });
   }
   
   navigateToUserProfile(userId: string) {
     this.router.navigate(['profile', userId]); // Navigate to user profile with userId as parameter
   }
+
   loadFollowingUsers() {
-    this.authService.getCurrentUser().subscribe(currentUser => {
-      if (currentUser) {
-        const currentUserId = currentUser.uid;
-        this.firestore.collection(`users/${currentUserId}/following`).valueChanges({ idField: 'uid' })
-          .subscribe((followingUsers: any[]) => {
-            // Update the set of following user IDs
-            this.followingUserIds.clear();
-            followingUsers.forEach(user => {
-              this.followingUserIds.add(user.uid);
-            });
-            // Update the following state for each user
-            this.users.forEach(user => {
-              user.isFollowing = this.followingUserIds.has(user.uid);
-            });
-          });
-      }
-    });
+    // Use the currentUserId obtained from the subscription
+    this.firestore.collection(`users/${this.currentUserId}/following`).valueChanges({ idField: 'uid' })
+      .subscribe((followingUsers: any[]) => {
+        // Update the set of following user IDs
+        this.followingUserIds.clear();
+        followingUsers.forEach(user => {
+          this.followingUserIds.add(user.uid);
+        });
+        // Update the following state for each user
+        this.users.forEach(user => {
+          user.isFollowing = this.followingUserIds.has(user.uid);
+        });
+      });
   }
 
   toggleFollow(user: User) {
-    const currentUserId = this.authService.userId;
+    // Use the currentUserId obtained from the subscription
     if (user.isFollowing) {
       // Unfollow the user
-      this.userService.unfollowUser(currentUserId, user.uid)
+      this.userService.unfollowUser(this.currentUserId, user.uid)
         .then(() => {
           user.isFollowing = false;
           this.followingUserIds.delete(user.uid);
@@ -78,7 +77,7 @@ export class FollowUsersComponent implements OnInit {
         });
     } else {
       // Follow the user
-      this.userService.followUser(currentUserId, user.uid)
+      this.userService.followUser(this.currentUserId, user.uid)
         .then(() => {
           user.isFollowing = true;
           this.followingUserIds.add(user.uid);

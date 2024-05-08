@@ -1,10 +1,9 @@
-// meal-planning.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { RecipeService } from '../../shared/recipe.service';
 import { Recipe } from '../../model/recipe.interface';
 import { AuthService } from '../../shared/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-meal-planning',
@@ -18,8 +17,11 @@ export class MealPlanningComponent implements OnInit {
   mealPlan: { [key: string]: Recipe } = {}; // Store selected recipes for each meal type
   selectedRecipes: { [key: string]: boolean } = {}; // Track selected recipes
 
-  constructor(private recipeService: RecipeService, private authService: AuthService, private snackBar: MatSnackBar // Inject MatSnackBar
-) {}
+  constructor(
+    private recipeService: RecipeService,
+    private authService: AuthService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.selectedDate = new Date().toISOString().split('T')[0];
@@ -27,10 +29,9 @@ export class MealPlanningComponent implements OnInit {
 
   fetchRecipes(mealType: string): void {
     this.selectedMealType = mealType;
-    this.recipeService.getAllRecipes()
-      .subscribe(recipes => {
-        this.recipes = recipes;
-      });
+    this.recipeService.getAllRecipes().subscribe(recipes => {
+      this.recipes = recipes;
+    });
   }
 
   selectMeal(recipe: Recipe): void {
@@ -45,25 +46,31 @@ export class MealPlanningComponent implements OnInit {
       this.mealPlan[this.selectedMealType] = recipe;
       this.selectedRecipes[recipe.recipeId] = true; // Mark the recipe as selected
     }
-}
-
+  }
 
   saveMealPlan(): void {
-    if (!this.selectedDate || !this.authService.userId) return;
+    if (!this.selectedDate || !this.authService.userId$) return;
+
     const meals = Object.keys(this.mealPlan).map(mealType => ({
       name: mealType,
       recipeId: this.mealPlan[mealType].recipeId
     }));
-    this.recipeService.createMealPlan(this.authService.userId, this.selectedDate, meals)
-      .then(() => {
-        this.snackBar.open('Meal plan saved successfully', 'Close', { duration: 7000 }); // Show notification
-        console.log('ADDED MEAL');
 
-        this.mealPlan = {};
-        this.selectedRecipes = {}; // Reset selected recipes
-      })
-      .catch(error => {
-        console.error('Error saving meal plan:', error);
-      });
+    this.authService.userId$.pipe(take(1)).subscribe(userId => {
+      this.recipeService
+        .createMealPlan(userId, this.selectedDate, meals)
+        .then(() => {
+          this.snackBar.open('Meal plan saved successfully', 'Close', {
+            duration: 7000
+          }); // Show notification
+          console.log('ADDED MEAL');
+
+          this.mealPlan = {};
+          this.selectedRecipes = {}; // Reset selected recipes
+        })
+        .catch(error => {
+          console.error('Error saving meal plan:', error);
+        });
+    });
   }
 }

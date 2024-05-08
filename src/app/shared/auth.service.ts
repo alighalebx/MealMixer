@@ -3,29 +3,39 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { User } from '../model/user.interface';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  userId: string = '';
-
+  // userId: string = '';
+  private userIdSource = new BehaviorSubject<string>('');
+  userId$ = this.userIdSource.asObservable();
   constructor(
     private fireauth: AngularFireAuth,
     private firestore: AngularFirestore,
     private router: Router
-  ) {}
+  ) {
+    this.fireauth.authState.subscribe(user => {
+      if (user) {
+        this.userIdSource.next(user.uid);
+      } else {
+        this.userIdSource.next('');
+      }
+    });
+  }
 
+  isLoggedIn(): boolean {
+    return !!this.fireauth.currentUser;
+  }
 
   login(email: string, password: string) {
     this.fireauth.signInWithEmailAndPassword(email, password).then((userCredential) => {
-      // Store the user ID after successful login
+      // Update the userId BehaviorSubject after successful login
       if (userCredential.user) {
-        this.userId = userCredential.user.uid;
+        this.userIdSource.next(userCredential.user.uid);
       }
-      // Update userId immediately after successful login
-      this.userId = userCredential.user?.uid || '';
       this.router.navigate(['dashboard']);
     }, err => {
       alert("Something went wrong");
@@ -68,6 +78,8 @@ export class AuthService {
   // Sign out
   logout() {
     this.fireauth.signOut().then(() => {
+      // Clear the userId BehaviorSubject on logout
+      this.userIdSource.next('');
       this.router.navigate(['/login']);
     }, err => {
       alert(err.message);

@@ -26,29 +26,28 @@ export class UserProfileComponent implements OnInit {
     // Retrieve user ID from route parameters
     this.route.paramMap.subscribe(params => {
       const userId = params.get('userId');
-      if (userId) {
-        // Fetch user data
-        this.userData$ = this.firestore.doc<any>(`users/${userId}`).valueChanges();
-
-        // Fetch recipes uploaded by the user
-        // this.userRecipes$ = this.firestore.collection<any>(`recipes`, ref => ref.where('userId', '==', userId)).valueChanges();
-        
-         
-          this.userRecipes$ = this.recipeService.getRecipesByUserId(userId);
-          
-        console.log(this.userRecipes$);
-        // Fetch followers count
-        this.firestore.doc<any>(`users/${userId}`).valueChanges()
-          .subscribe((userDoc: any) => {
-            this.followersCount = userDoc.followers ? userDoc.followers.length : 0; // Update followers count
-          });
-
-        // Fetch following count
-        this.firestore.collection(`users/${userId}/following`).valueChanges()
-          .subscribe(following => {
-            this.followingCount = following.length; // Update following count
-          });
+      if (!userId) {
+        // Redirect to login page if userId is not available
+        this.router.navigate(['/login']);
+        return; // Stop further execution
       }
+      // Fetch user data
+      this.userData$ = this.firestore.doc<any>(`users/${userId}`).valueChanges();
+
+      // Fetch recipes uploaded by the user
+      this.userRecipes$ = this.recipeService.getRecipesByUserId(userId);
+      
+      // Fetch followers count
+      this.firestore.doc<any>(`users/${userId}`).valueChanges()
+        .subscribe((userDoc: any) => {
+          this.followersCount = userDoc.followers ? userDoc.followers.length : 0; // Update followers count
+        });
+
+      // Fetch following count
+      this.firestore.collection(`users/${userId}/following`).valueChanges()
+        .subscribe(following => {
+          this.followingCount = following.length; // Update following count
+        });
     });
   }
   navigateToMealPlanning(): void {

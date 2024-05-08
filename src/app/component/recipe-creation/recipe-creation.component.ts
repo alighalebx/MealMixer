@@ -4,7 +4,7 @@ import { RecipeService } from '../../shared/recipe.service';
 import { Recipe } from '../../model/recipe.interface';
 import { AuthService } from '../../shared/auth.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { finalize } from 'rxjs/operators';
+import { finalize, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-recipe-creation',
@@ -80,23 +80,25 @@ export class RecipeCreationComponent {
   }
 
   createRecipe(imageURL: string): void {
-    const newRecipe: Recipe = {
-      recipeId: '',
-      title: this.recipeForm.value.title,
-      authorId: this.authService.userId,
-      ingredients: this.recipeForm.value.ingredients,
-      instructions: this.recipeForm.value.instructions,
-      cuisine: this.recipeForm.value.cuisine,
-      cookingTime: this.recipeForm.value.cookingTime,
-      createdAt: this.recipeForm.value.createdAt,
-      photoURL: imageURL // Assign imageURL to photoURL property
-    };
+    this.authService.userId$.pipe(take(1)).subscribe(userId => {
+      const newRecipe: Recipe = {
+        recipeId: '',
+        title: this.recipeForm.value.title,
+        authorId: userId,
+        ingredients: this.recipeForm.value.ingredients,
+        instructions: this.recipeForm.value.instructions,
+        cuisine: this.recipeForm.value.cuisine,
+        cookingTime: this.recipeForm.value.cookingTime,
+        createdAt: this.recipeForm.value.createdAt,
+        photoURL: imageURL // Assign imageURL to photoURL property
+      };
 
-    this.recipeService.addRecipe(newRecipe).then(() => {
-      console.log('Recipe added successfully');
-      this.recipeForm.reset();
-    }).catch(error => {
-      console.error('Error adding recipe:', error);
+      this.recipeService.addRecipe(newRecipe).then(() => {
+        console.log('Recipe added successfully');
+        this.recipeForm.reset();
+      }).catch(error => {
+        console.error('Error adding recipe:', error);
+      });
     });
   }
 

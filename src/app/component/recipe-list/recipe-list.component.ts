@@ -10,8 +10,13 @@ import { AuthService } from '../../shared/auth.service';
 })
 export class RecipeListComponent implements OnInit {
   recipes: Recipe[] = [];
+  userId: string='';
 
-  constructor(private recipeService: RecipeService ,private auth: AuthService) { }
+  constructor(private recipeService: RecipeService ,private auth: AuthService) {
+    this.auth.userId$.subscribe(id => {
+      this.userId = id;
+    });
+   }
 
   ngOnInit(): void {
     this.fetchRecipes();
@@ -36,16 +41,15 @@ export class RecipeListComponent implements OnInit {
 
   // Method to handle like/unlike button click
   toggleLike(recipe: Recipe): void {
-    const userId = this.auth.userId;
     if (recipe.isLiked) {
       // Unlike the recipe optimistically
       recipe.isLiked = false;
       if (recipe.likeCount !== undefined) {
         recipe.likeCount--;
       }
-  
+
       // Send unlike request to the server
-      this.recipeService.unlikeRecipe(recipe.recipeId, userId)
+      this.recipeService.unlikeRecipe(recipe.recipeId, this.userId)
         .catch(error => {
           // Revert local changes if server request fails
           recipe.isLiked = true;
@@ -60,9 +64,9 @@ export class RecipeListComponent implements OnInit {
       if (recipe.likeCount !== undefined) {
         recipe.likeCount++;
       }
-  
+
       // Send like request to the server
-      this.recipeService.likeRecipe(recipe.recipeId, userId)
+      this.recipeService.likeRecipe(recipe.recipeId, this.userId)
         .catch(error => {
           // Revert local changes if server request fails
           recipe.isLiked = false;
@@ -73,5 +77,4 @@ export class RecipeListComponent implements OnInit {
         });
     }
   }
-  
 }

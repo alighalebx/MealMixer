@@ -12,22 +12,22 @@ import { UserProfileComponent } from './component/user-profile/user-profile.comp
 import { FollowUsersComponent } from './component/follow-users/follow-users.component';
 import { MealPlanningComponent } from './component/meal-planning/meal-planning.component';
 import { MealPlanListComponent } from './component/meal-plan-list/meal-plan-list.component';
+import { AuthGuardService } from './shared/auth-guard.service';
 
 const routes: Routes = [
   {path: '',redirectTo:'login',pathMatch:'full'},
   {path: 'login',component: LoginComponent},
-  {path: 'dashboard',component:DashboardComponent},
+  {path: 'dashboard',component:DashboardComponent, canActivate: [AuthGuardService]},
   {path: 'register',component:RegisterComponent},
   {path: 'varify-email', component : VerifyEmailComponent},
   {path: 'forgot-password', component : ForgotPasswordComponent},
-  { path: 'recipes', component: RecipeListComponent },
-  { path: 'recipes/create', component: RecipeCreationComponent },
-  { path: 'recipes/:id', component: RecipeDetailsComponent }, // Route for viewing a single recipe by its ID
-  { path: 'profile/:userId', component: UserProfileComponent },
-  { path: 'follow-users', component: FollowUsersComponent },
-  { path: 'meal-planning', component: MealPlanningComponent},
-  { path: 'selected-meal-planning', component: MealPlanListComponent}
-
+  { path: 'recipes', component: RecipeListComponent, canActivate: [AuthGuardService] },
+  { path: 'recipes/create', component: RecipeCreationComponent, canActivate: [AuthGuardService] },
+  { path: 'recipes/:id', component: RecipeDetailsComponent, canActivate: [AuthGuardService] }, // Route for viewing a single recipe by its ID
+  { path: 'profile/:userId', component: UserProfileComponent, canActivate: [AuthGuardService] },
+  { path: 'follow-users', component: FollowUsersComponent, canActivate: [AuthGuardService] },
+  { path: 'meal-planning', component: MealPlanningComponent, canActivate: [AuthGuardService]},
+  { path: 'selected-meal-planning', component: MealPlanListComponent, canActivate: [AuthGuardService]}
 ];
 
 @NgModule({
