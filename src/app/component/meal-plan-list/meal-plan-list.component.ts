@@ -62,6 +62,6 @@ export class MealPlanListComponent implements OnInit {
     return this.recipeTitles[recipeId] || 'Loading...'; // Return the title if it's in the cache, otherwise show 'Loading...'
   }
   navigateToMealPlanning(): void {
-    this.router.navigate(['/meal-planning']); // Navigate to the meal planning page
+    this.router.navigate(['/meal-planning']);
   }
 }

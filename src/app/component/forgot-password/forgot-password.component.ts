@@ -16,6 +16,6 @@ export class ForgotPasswordComponent {
 
   forgotPassword() {
     this.auth.forgotPassword(this.email);
-    this.email = ''; // Clear the email field after submission
+    this.email = '';
   }
 }

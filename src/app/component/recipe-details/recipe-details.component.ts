@@ -17,10 +17,11 @@ export class RecipeDetailsComponent implements OnInit {
   recipeId: string | undefined;
   recipe: Recipe | undefined;
   authorName: string | null = null;
-  comments: Comment[] = []; // Array to store comments
-  newComment: string = ''; // Variable to store new comment text
-  users: { [key: string]: User } = {}; // Object to store user details
-
+  comments: Comment[] = []; 
+  newComment: string = ''; 
+  users: { [key: string]: User } = {}; 
+  selectedRating: number = 0;
+  ratingOptions: number[] = [1, 2, 3, 4, 5];
   constructor(
     private route: ActivatedRoute,
     private recipeService: RecipeService,
@@ -107,5 +108,23 @@ export class RecipeDetailsComponent implements OnInit {
     }
   }
 
- 
+  submitRating(): void {
+    if (this.selectedRating > 0 && this.recipeId) {
+      this.authService.getCurrentUser().subscribe(user => {
+        if (user) {
+          const userId = user.uid;
+          this.recipeService.addRatingToRecipe(this.recipeId!, userId, this.selectedRating).then(() => {
+            console.log('Rating submitted successfully');
+            // Optionally, refresh the recipe details to show the updated average rating
+          }).catch(error => {
+            console.error('Error submitting rating:', error);
+          });
+        } else {
+          console.log('User is not logged in. Redirecting to login page...');
+        }
+      });
+    }
+  }
 }
+
+

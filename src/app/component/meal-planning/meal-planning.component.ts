@@ -14,8 +14,8 @@ export class MealPlanningComponent implements OnInit {
   selectedDate: string = '';
   selectedMealType: string | null = null;
   recipes: Recipe[] = [];
-  mealPlan: { [key: string]: Recipe } = {}; // Store selected recipes for each meal type
-  selectedRecipes: { [key: string]: boolean } = {}; // Track selected recipes
+  mealPlan: { [key: string]: Recipe } = {};
+  selectedRecipes: { [key: string]: boolean } = {}; 
 
   constructor(
     private recipeService: RecipeService,
@@ -62,11 +62,11 @@ export class MealPlanningComponent implements OnInit {
         .then(() => {
           this.snackBar.open('Meal plan saved successfully', 'Close', {
             duration: 7000
-          }); // Show notification
+          });
           console.log('ADDED MEAL');
 
           this.mealPlan = {};
-          this.selectedRecipes = {}; // Reset selected recipes
+          this.selectedRecipes = {};
         })
         .catch(error => {
           console.error('Error saving meal plan:', error);

@@ -12,9 +12,9 @@ import { take } from 'rxjs/operators';
   styleUrls: ['./follow-users.component.css']
 })
 export class FollowUsersComponent implements OnInit {
-  users: User[] = []; // Array to store all users except the logged-in user
-  followingUserIds: Set<string> = new Set(); // Set to store IDs of users being followed
-  currentUserId: string=''; // Store the current user's ID
+  users: User[] = []; 
+  followingUserIds: Set<string> = new Set(); 
+  currentUserId: string='';
 
   constructor(
     private userService: UserService,
@@ -24,13 +24,11 @@ export class FollowUsersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Subscribe to the userId$ observable to get the current userId
     this.authService.userId$.pipe(take(1)).subscribe(id => {
       this.currentUserId = id;
       if (!this.currentUserId) {
-        // Redirect to login page if userId is not available
         this.router.navigate(['/login']);
-        return; // Stop further execution
+        return;
       }
       this.loadFollowingUsers();
       this.loadAllUsers();
@@ -38,10 +36,8 @@ export class FollowUsersComponent implements OnInit {
   }
 
   loadAllUsers() {
-    // Use the currentUserId obtained from the subscription
     this.userService.getAllUsers().subscribe(allUsers => {
       this.users = allUsers.filter(user => user.uid !== this.currentUserId);
-      // Initialize the following state for each user
       this.users.forEach(user => {
         user.isFollowing = this.followingUserIds.has(user.uid);
       });
@@ -53,15 +49,12 @@ export class FollowUsersComponent implements OnInit {
   }
 
   loadFollowingUsers() {
-    // Use the currentUserId obtained from the subscription
     this.firestore.collection(`users/${this.currentUserId}/following`).valueChanges({ idField: 'uid' })
       .subscribe((followingUsers: any[]) => {
-        // Update the set of following user IDs
         this.followingUserIds.clear();
         followingUsers.forEach(user => {
           this.followingUserIds.add(user.uid);
         });
-        // Update the following state for each user
         this.users.forEach(user => {
           user.isFollowing = this.followingUserIds.has(user.uid);
         });
@@ -69,9 +62,7 @@ export class FollowUsersComponent implements OnInit {
   }
 
   toggleFollow(user: User) {
-    // Use the currentUserId obtained from the subscription
     if (user.isFollowing) {
-      // Unfollow the user
       this.userService.unfollowUser(this.currentUserId, user.uid)
         .then(() => {
           user.isFollowing = false;
@@ -81,7 +72,6 @@ export class FollowUsersComponent implements OnInit {
           console.error('Error unfollowing user:', error);
         });
     } else {
-      // Follow the user
       this.userService.followUser(this.currentUserId, user.uid)
         .then(() => {
           user.isFollowing = true;

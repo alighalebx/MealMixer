@@ -7,6 +7,7 @@ import { Like } from '../model/like.interface';
 import { Comment } from '../model/comment.interface';
 import { MealPlan } from '../model/meal-plan.interface';
 import { Meal } from '../model/meal.interface';
+import { Rating } from '../model/rating.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -113,6 +114,36 @@ export class RecipeService {
     ).valueChanges({ idField: 'recipeId' });
   }
 
+  addRatingToRecipe(recipeId: string, userId: string, rating: number): Promise<DocumentReference<Rating>> {
+    const ratingData: Rating = {
+      userId,
+      rating,
+      createdAt: new Date()
+    };
+    return this.firestore.collection<Rating>(`recipes/${recipeId}/ratings`).add(ratingData);
+  }
+
+  // Calculate average rating for a recipe
+  getAverageRatingForRecipe(recipeId: string): Observable<number> {
+    return this.firestore.collection<Rating>(`recipes/${recipeId}/ratings`).valueChanges().pipe(
+      map(ratings => {
+        if (ratings.length === 0) {
+          return 0; // Return 0 if no ratings yet
+        }
+        const totalRating = ratings.reduce((acc, curr) => acc + Number(curr.rating), 0);
+        return totalRating / ratings.length;
+      })
+    );
+  }
+  
+  
+
+  // Get total number of ratings for a recipe
+  getTotalRatingsForRecipe(recipeId: string): Observable<number> {
+    return this.firestore.collection<Rating>(`recipes/${recipeId}/ratings`).valueChanges().pipe(
+      map(ratings => ratings.length)
+    );
+  }
 
 
 

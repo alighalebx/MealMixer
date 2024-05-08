@@ -8,7 +8,7 @@ import { take } from 'rxjs/operators';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'] // Corrected the property name to 'styleUrls'
 })
-export class AppComponent {
+export class AppComponent{
   title = 'MealMixer';
   userId: string='';
 
@@ -16,11 +16,6 @@ export class AppComponent {
     this.auth.userId$.subscribe(id => {
       this.userId = id;
     });
-    if (!this.userId) {
-      // Redirect to login page if userId is not available
-      this.router.navigate(['/login']);
-      return; // Stop further execution
-    }
   }
 
   navigateToCreateRecipe() {

@@ -28,6 +28,7 @@ export class RecipeListComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchRecipes();
+    
   }
   searchRecipes(event: any): void {
     const keyword = event.target.value.toLowerCase();
@@ -39,8 +40,8 @@ export class RecipeListComponent implements OnInit {
       // Otherwise, search for recipes based on the keyword
       this.recipeService.searchRecipes(keyword).subscribe(recipes => {
         this.recipes = recipes;
-        // Fetch and update like counts for each recipe
         this.updateLikeCounts();
+        this.updateAverageRatings();
       });
     }
   }
@@ -49,6 +50,15 @@ export class RecipeListComponent implements OnInit {
       this.recipes = recipes;
       // Fetch and update like counts for each recipe
       this.updateLikeCounts();
+      this.updateAverageRatings();
+    });
+  }
+
+  updateAverageRatings(): void {
+    this.recipes.forEach(recipe => {
+      this.recipeService.getAverageRatingForRecipe(recipe.recipeId).subscribe(averageRating => {
+        recipe.averageRating = averageRating; // Assuming you have an averageRating field in your Recipe interface
+      });
     });
   }
 

@@ -24,6 +24,22 @@
                             </svg>
                             <p class="text-sm text-gray-500">Cuisine: {{ recipe.cuisine }}</p>
                         </div>
+
+                        <div class="flex items-center">
+                            <p class="text-sm text-gray-500">Rate: </p>
+                            <select [(ngModel)]="selectedRating" (change)="submitRating()" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                              <option value="0" disabled selected>Select rating</option>
+                              <option *ngFor="let option of ratingOptions" [value]="option">{{ option }}</option>
+                            </select>
+                          </div>
+
+
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M10 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm8-8h-1.09A7.002 7.002 0 0 0 12 3V2a1 1 0 0 0-2 0v1a7.002 7.002 0 0 0-4.91 1.91L3.707 3.293a1 1 0 1 0-1.414 1.414L4.59 6.707A6.963 6.963 0 0 0 3 10c0 3.859 3.141 7 7 7s7-3.141 7-7a6.963 6.963 0 0 0-.59-2.707l2.297-2.297A1 1 0 0 0 18 4ZM12 16c-3.309 0-6-2.691-6-6s2.691-6 6-6 6 2.691 6 6-2.691 6-6 6Z"/>
+                            </svg>
+                            <p class="text-sm text-gray-500">Rate: {{ recipe.totalRatings }}</p>
+                        </div>
                     </div>
                 </div>
                 <img *ngIf="recipe.photoURL" [src]="recipe.photoURL" class="mt-4 rounded-lg w-custom mx-auto" alt="Recipe Image"> <!-- Custom width class -->
