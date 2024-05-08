@@ -10,8 +10,18 @@ import { take } from 'rxjs/operators';
 })
 export class AppComponent {
   title = 'MealMixer';
+  userId: string='';
 
-  constructor(private router: Router, private auth: AuthService) {}
+  constructor(private router: Router, private auth: AuthService) {
+    this.auth.userId$.subscribe(id => {
+      this.userId = id;
+    });
+    if (!this.userId) {
+      // Redirect to login page if userId is not available
+      this.router.navigate(['/login']);
+      return; // Stop further execution
+    }
+  }
 
   navigateToCreateRecipe() {
     // Use take(1) to get the current userId just for this navigation
@@ -36,5 +46,14 @@ export class AppComponent {
 
   navigateToFollowUsers() {
     this.router.navigate(['follow-users']);
+  }
+  loginOrLogout(): void {
+    if (this.userId) {
+      // If logged in, perform logout
+      this.auth.logout();
+    } else {
+      // If not logged in, redirect to login page
+      this.router.navigate(['/login']);
+    }
   }
 }

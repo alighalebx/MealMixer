@@ -12,7 +12,7 @@
       </a>
       </div>
       <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-        <button type="button" class="text-white bg-primry3 hover:bg-primry3bold focus:ring-4 focus:outline-none focus:ring-orange-500 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-primry3 dark:hover:bg-primry3 dark:focus:bg-primry3bold" (click)="navigateToCreateRecipe()">Get started</button>
+        <button (click)="loginOrLogout()" class="bg-primry3 text-white py-2 px-6 rounded-full font-semibold text-lg hover:bg-primry3bold hover:text-white transition duration-300">{{ userId ? 'Logout' : 'Login' }}</button>
         <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-1 w-8 h-8 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
           <span class="sr-only">Open main menu</span>
           <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">

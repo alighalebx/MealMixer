@@ -5,7 +5,7 @@
     <div class="w-1/2 p-8">
         <h1 class="text-4xl md:text-6xl font-bold mb-4 text-gray-800">Discover Delicious Recipes</h1>
         <p class="text-lg md:text-xl mb-8 text-gray-700">Plan your meals and explore a variety of recipes for every occasion.</p>
-        <a href="#" class="bg-primry3 text-white py-2 px-6 rounded-full font-semibold text-lg hover:bg-primry3bold hover:text-white transition duration-300">Get Started</a>
+        <button (click)="loginOrLogout()" class="bg-primry3 text-white py-2 px-6 rounded-full font-semibold text-lg hover:bg-primry3bold hover:text-white transition duration-300">{{ userId ? 'Logout' : 'Login' }}</button>
     </div>
 
     <!-- Right Side Image -->

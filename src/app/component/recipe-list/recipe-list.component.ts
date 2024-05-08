@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RecipeService } from '../../shared/recipe.service';
 import { Recipe } from '../../model/recipe.interface';
 import { AuthService } from '../../shared/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-list',
@@ -13,10 +14,16 @@ export class RecipeListComponent implements OnInit {
   userId: string='';
   filteredRecipes: Recipe[] = [];
 
-  constructor(private recipeService: RecipeService ,private auth: AuthService) {
+  constructor(private recipeService: RecipeService ,private auth: AuthService,private router: Router,
+  ) {
     this.auth.userId$.subscribe(id => {
       this.userId = id;
     });
+    if (!this.userId) {
+      // Redirect to login page if userId is not available
+      this.router.navigate(['/login']);
+      return; // Stop further execution
+    }
    }
 
   ngOnInit(): void {

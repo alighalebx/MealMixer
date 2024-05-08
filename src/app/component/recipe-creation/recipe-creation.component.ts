@@ -1,17 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { RecipeService } from '../../shared/recipe.service';
 import { Recipe } from '../../model/recipe.interface';
 import { AuthService } from '../../shared/auth.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { finalize, take } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-creation',
   templateUrl: './recipe-creation.component.html',
   styleUrls: ['./recipe-creation.component.css']
 })
-export class RecipeCreationComponent {
+export class RecipeCreationComponent implements OnInit {
   recipeForm: FormGroup;
   selectedImage: File | null = null;
   imageURL: string | null = null;
@@ -20,7 +21,9 @@ export class RecipeCreationComponent {
     private formBuilder: FormBuilder,
     private recipeService: RecipeService,
     private authService: AuthService,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {
     this.recipeForm = this.formBuilder.group({
       title: ['', Validators.required],
@@ -32,7 +35,17 @@ export class RecipeCreationComponent {
       photoURL: ['']
     });
   }
+  ngOnInit(): void {
+    this.authService.userId$.pipe(take(1)).subscribe(userId => {
+      if (!userId) {
+        // Redirect to login page if userId is not available
+        this.router.navigate(['/login']);
+        return; // Stop further execution
+      }
+  });
+}
 
+  
   createIngredient(): FormGroup {
     return this.formBuilder.group({
       name: ['', Validators.required],

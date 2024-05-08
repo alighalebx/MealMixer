@@ -27,6 +27,11 @@ export class FollowUsersComponent implements OnInit {
     // Subscribe to the userId$ observable to get the current userId
     this.authService.userId$.pipe(take(1)).subscribe(id => {
       this.currentUserId = id;
+      if (!this.currentUserId) {
+        // Redirect to login page if userId is not available
+        this.router.navigate(['/login']);
+        return; // Stop further execution
+      }
       this.loadFollowingUsers();
       this.loadAllUsers();
     });
