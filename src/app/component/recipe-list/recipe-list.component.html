@@ -1,5 +1,7 @@
 <div class="container" style="padding-top: 128px;"> 
   <h2 class="flex items-center justify-center text-2xl font-bold mb-4">Embark on a Journey</h2>
+  <input type="text" placeholder="Search recipes..." (input)="searchRecipes($event)" class="mb-4 p-2 border border-gray-400 rounded-md">
+
   <div class="flex justify-center space-x-4 flex-wrap"> <!-- Added flex-wrap for responsiveness -->
     <button class="bg-figmaPri hover:bg-Lime-500 text-gray-400 font-semibold py-2 px-4 rounded-full">
       ALL

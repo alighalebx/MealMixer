@@ -11,6 +11,7 @@ import { AuthService } from '../../shared/auth.service';
 export class RecipeListComponent implements OnInit {
   recipes: Recipe[] = [];
   userId: string='';
+  filteredRecipes: Recipe[] = [];
 
   constructor(private recipeService: RecipeService ,private auth: AuthService) {
     this.auth.userId$.subscribe(id => {
@@ -21,7 +22,21 @@ export class RecipeListComponent implements OnInit {
   ngOnInit(): void {
     this.fetchRecipes();
   }
+  searchRecipes(event: any): void {
+    const keyword = event.target.value.toLowerCase();
 
+    if (keyword.trim() === '') {
+      // If the search keyword is empty, display all recipes
+      this.fetchRecipes();
+    } else {
+      // Otherwise, search for recipes based on the keyword
+      this.recipeService.searchRecipes(keyword).subscribe(recipes => {
+        this.recipes = recipes;
+        // Fetch and update like counts for each recipe
+        this.updateLikeCounts();
+      });
+    }
+  }
   fetchRecipes(): void {
     this.recipeService.getAllRecipes().subscribe(recipes => {
       this.recipes = recipes;
@@ -42,7 +57,6 @@ export class RecipeListComponent implements OnInit {
   // Method to handle like/unlike button click
   toggleLike(recipe: Recipe): void {
     if (recipe.isLiked) {
-      // Unlike the recipe optimistically
       recipe.isLiked = false;
       if (recipe.likeCount !== undefined) {
         recipe.likeCount--;
@@ -51,7 +65,6 @@ export class RecipeListComponent implements OnInit {
       // Send unlike request to the server
       this.recipeService.unlikeRecipe(recipe.recipeId, this.userId)
         .catch(error => {
-          // Revert local changes if server request fails
           recipe.isLiked = true;
           if (recipe.likeCount !== undefined) {
             recipe.likeCount++;
@@ -59,7 +72,6 @@ export class RecipeListComponent implements OnInit {
           console.error('Failed to unlike recipe:', error);
         });
     } else {
-      // Like the recipe optimistically
       recipe.isLiked = true;
       if (recipe.likeCount !== undefined) {
         recipe.likeCount++;
@@ -68,7 +80,6 @@ export class RecipeListComponent implements OnInit {
       // Send like request to the server
       this.recipeService.likeRecipe(recipe.recipeId, this.userId)
         .catch(error => {
-          // Revert local changes if server request fails
           recipe.isLiked = false;
           if (recipe.likeCount !== undefined) {
             recipe.likeCount--;
