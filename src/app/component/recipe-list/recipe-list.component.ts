@@ -13,6 +13,8 @@ export class RecipeListComponent implements OnInit {
   recipes: Recipe[] = [];
   userId: string='';
   filteredRecipes: Recipe[] = [];
+  cuisineFilter: string | null = null;
+  activeCuisine: string | null = null;
 
   constructor(private recipeService: RecipeService ,private auth: AuthService,private router: Router,
   ) {
@@ -20,26 +22,26 @@ export class RecipeListComponent implements OnInit {
       this.userId = id;
     });
     if (!this.userId) {
-      // Redirect to login page if userId is not available
       this.router.navigate(['/login']);
-      return; // Stop further execution
+      return; 
     }
    }
 
   ngOnInit(): void {
+
     this.fetchRecipes();
+    
     
   }
   searchRecipes(event: any): void {
     const keyword = event.target.value.toLowerCase();
 
     if (keyword.trim() === '') {
-      // If the search keyword is empty, display all recipes
       this.fetchRecipes();
     } else {
-      // Otherwise, search for recipes based on the keyword
       this.recipeService.searchRecipes(keyword).subscribe(recipes => {
         this.recipes = recipes;
+        this.filteredRecipes = [...this.recipes]; 
         this.updateLikeCounts();
         this.updateAverageRatings();
       });
@@ -48,7 +50,6 @@ export class RecipeListComponent implements OnInit {
   fetchRecipes(): void {
     this.recipeService.getAllRecipes().subscribe(recipes => {
       this.recipes = recipes;
-      // Fetch and update like counts for each recipe
       this.updateLikeCounts();
       this.updateAverageRatings();
     });
@@ -57,12 +58,11 @@ export class RecipeListComponent implements OnInit {
   updateAverageRatings(): void {
     this.recipes.forEach(recipe => {
       this.recipeService.getAverageRatingForRecipe(recipe.recipeId).subscribe(averageRating => {
-        recipe.averageRating = averageRating; // Assuming you have an averageRating field in your Recipe interface
+        recipe.averageRating = averageRating; 
       });
     });
   }
 
-  // Method to update like counts for each recipe
   updateLikeCounts(): void {
     this.recipes.forEach(recipe => {
       this.recipeService.getLikeCountForRecipe(recipe.recipeId).subscribe(count => {
@@ -71,7 +71,6 @@ export class RecipeListComponent implements OnInit {
     });
   }
 
-  // Method to handle like/unlike button click
   toggleLike(recipe: Recipe): void {
     if (recipe.isLiked) {
       recipe.isLiked = false;
@@ -79,7 +78,6 @@ export class RecipeListComponent implements OnInit {
         recipe.likeCount--;
       }
 
-      // Send unlike request to the server
       this.recipeService.unlikeRecipe(recipe.recipeId, this.userId)
         .catch(error => {
           recipe.isLiked = true;
@@ -94,7 +92,6 @@ export class RecipeListComponent implements OnInit {
         recipe.likeCount++;
       }
 
-      // Send like request to the server
       this.recipeService.likeRecipe(recipe.recipeId, this.userId)
         .catch(error => {
           recipe.isLiked = false;
@@ -105,4 +102,19 @@ export class RecipeListComponent implements OnInit {
         });
     }
   }
+
+  applyCuisineFilter(cuisine: string | null = null): void {
+    if (cuisine) {
+      this.filteredRecipes = this.recipes.filter(recipe => recipe.cuisine === cuisine);
+    } else {
+      this.filteredRecipes = [...this.recipes];
+    }
+  }
+
+  filterByCuisine(cuisine: string): void {
+    this.activeCuisine = cuisine || '';
+    this.applyCuisineFilter(this.activeCuisine);
+  }
+  
+
 }
