@@ -3,6 +3,7 @@ import { RecipeService } from '../../shared/recipe.service';
 import { MealPlan } from '../../model/meal-plan.interface';
 import { AuthService } from '../../shared/auth.service';
 import { Recipe } from '../../model/recipe.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-meal-plan-list',
@@ -14,7 +15,8 @@ export class MealPlanListComponent implements OnInit {
   mealPlans: MealPlan[] = [];
   recipeTitles: { [recipeId: string]: string } = {}; // Local cache for recipe titles
 
-  constructor(private recipeService: RecipeService, private authService: AuthService) {}
+  constructor(private recipeService: RecipeService, private authService: AuthService, private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.selectedDate = new Date().toISOString().split('T')[0];
@@ -58,5 +60,8 @@ export class MealPlanListComponent implements OnInit {
 
   getRecipeTitle(recipeId: string): string {
     return this.recipeTitles[recipeId] || 'Loading...'; // Return the title if it's in the cache, otherwise show 'Loading...'
+  }
+  navigateToMealPlanning(): void {
+    this.router.navigate(['/meal-planning']); // Navigate to the meal planning page
   }
 }

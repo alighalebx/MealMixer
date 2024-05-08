@@ -51,6 +51,6 @@ export class UserProfileComponent implements OnInit {
     });
   }
   navigateToMealPlanning(): void {
-    this.router.navigate(['/meal-planning']); // Navigate to the meal planning page
+    this.router.navigate(['/selected-meal-planning']); // Navigate to the meal planning page
   }
 }

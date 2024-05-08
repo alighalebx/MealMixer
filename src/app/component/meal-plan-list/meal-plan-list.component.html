@@ -1,10 +1,12 @@
-<div class="container mx-auto">
+<div class="container mx-auto" style="padding-top: 128px;">
     <!-- Date Picker -->
     <div class="mb-4">
         <label for="date" class="block text-sm font-medium text-gray-700">Select Date:</label>
         <input type="date" id="date" name="date" [(ngModel)]="selectedDate" (change)="onDateChange()" class="mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block w-full">
       </div>  
   
+      <button class="bg-primry3 text-white px-4 py-2 rounded hover:bg-primry3bold" (click)="navigateToMealPlanning()">Meal Planning</button>
+
     <!-- Meal Plans -->
     <h2 class="text-2xl font-bold my-4">Meal Plans</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
