@@ -40,7 +40,7 @@ export class RecipeCreationComponent implements OnInit {
       if (!userId) {
         // Redirect to login page if userId is not available
         this.router.navigate(['/login']);
-        return; // Stop further execution
+        return;
       }
   });
 }
@@ -82,13 +82,12 @@ export class RecipeCreationComponent implements OnInit {
       uploadTask.snapshotChanges().pipe(
         finalize(() => {
           fileRef.getDownloadURL().subscribe(url => {
-            // Image uploaded successfully, now create the recipe with image URL
             this.createRecipe(url);
           });
         })
       ).subscribe();
     } else {
-      // Handle form validation errors or missing image
+      this.recipeForm.markAllAsTouched();
     }
   }
 
@@ -103,7 +102,7 @@ export class RecipeCreationComponent implements OnInit {
         cuisine: this.recipeForm.value.cuisine,
         cookingTime: this.recipeForm.value.cookingTime,
         createdAt: this.recipeForm.value.createdAt,
-        photoURL: imageURL // Assign imageURL to photoURL property
+        photoURL: imageURL
       };
 
       this.recipeService.addRecipe(newRecipe).then(() => {

@@ -32,7 +32,6 @@ export class AuthService {
 
   login(email: string, password: string) {
     this.fireauth.signInWithEmailAndPassword(email, password).then((userCredential) => {
-      // Update the userId BehaviorSubject after successful login
       if (userCredential.user) {
         this.userIdSource.next(userCredential.user.uid);
       }
@@ -47,15 +46,13 @@ export class AuthService {
   register(email: string, password: string, user: User) {
     this.fireauth.createUserWithEmailAndPassword(email, password).then(res => {
       if (res.user) {
-        // Set additional user data
         const userData = { 
           ...user,
           uid: res.user.uid,
-          displayName: user.username, // Set displayName to the username provided by the user
-          photoURL: user.photoURL // Set photoURL to a default value or null
+          displayName: user.username, 
+          photoURL: user.photoURL 
         };
   
-        // Add user data to Firestore
         this.firestore.collection('users').doc(res.user.uid).set(userData)
         .then(() => {
           alert('Registration Successful');
@@ -67,7 +64,6 @@ export class AuthService {
         });
       } else {
         console.error('User creation failed: User object is null.');
-        // Handle the case where res.user is null
       }
     }).catch(err => {
       alert(err.message);
@@ -78,7 +74,6 @@ export class AuthService {
   // Sign out
   logout() {
     this.fireauth.signOut().then(() => {
-      // Clear the userId BehaviorSubject on logout
       this.userIdSource.next('');
       this.router.navigate(['/login']);
     }, err => {
@@ -101,7 +96,6 @@ export class AuthService {
         if (user) {
           return this.firestore.doc<any>(`users/${user.uid}`).valueChanges();
         } else {
-          // Return an Observable that emits null when user is not logged in
           return of(null);
         }
       })

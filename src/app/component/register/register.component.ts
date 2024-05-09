@@ -25,16 +25,14 @@ export class RegisterComponent {
       return;
     }
 
-    // Prepare user object
     const user: User = {
       uid: '',
       email: this.email,
       username: this.username,
       displayName: '', 
-      photoURL: '' // Leave it empty for now, will be updated after uploading the image
+      photoURL: '' 
     };
 
-    // Upload image to Firebase Cloud Storage
     if (this.selectedFile) {
       const filePath = `profile_images/${this.selectedFile.name}`;
       const fileRef = this.storage.ref(filePath);
@@ -43,22 +41,20 @@ export class RegisterComponent {
       uploadTask.snapshotChanges().pipe(
         finalize(() => {
           fileRef.getDownloadURL().subscribe(url => {
-            user.photoURL = url; // Update the user object with the image URL
+            user.photoURL = url; 
             this.registerUserWithEmail(user);
           });
         })
       ).subscribe();
     } else {
-      // If no image selected, register user directly
       this.registerUserWithEmail(user);
     }
   }
 
   registerUserWithEmail(user: User) {
-    // Register user
+  
     this.auth.register(this.email, this.password, user);
 
-    // Clear form fields after registration
     this.email = '';
     this.password = '';
     this.username = '';
@@ -70,7 +66,6 @@ export class RegisterComponent {
     const file: File = event.target.files[0];
     this.selectedFile = file;
 
-    // Display preview of selected image
     const reader = new FileReader();
     reader.onload = (e) => {
       if (e.target && e.target.result) {

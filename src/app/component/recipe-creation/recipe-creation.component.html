@@ -8,6 +8,8 @@
           <div class="mb-6">
             <label for="title" class="block text-gray-700">Title</label>
             <input type="text" class="form-input mt-1 block w-full border-gray-300 rounded-md" id="title" formControlName="title">
+            <div *ngIf="recipeForm.get('title')?.invalid && recipeForm.get('title')?.touched" class="text-red-500">Title is required</div>
+
           </div>
           <div formArrayName="ingredients">
             <div *ngFor="let ingredientCtrl of getIngredientsControls(); let i = index" class="mb-4" [formGroupName]="i">
