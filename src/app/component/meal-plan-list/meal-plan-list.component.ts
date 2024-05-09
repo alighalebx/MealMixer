@@ -4,6 +4,7 @@ import { MealPlan } from '../../model/meal-plan.interface';
 import { AuthService } from '../../shared/auth.service';
 import { Recipe } from '../../model/recipe.interface';
 import { Router } from '@angular/router';
+import { Ingredient } from '../../model/ingredient.interface';
 
 @Component({
   selector: 'app-meal-plan-list',
@@ -13,7 +14,9 @@ import { Router } from '@angular/router';
 export class MealPlanListComponent implements OnInit {
   selectedDate: string = '';
   mealPlans: MealPlan[] = [];
-  recipeTitles: { [recipeId: string]: string } = {}; // Local cache for recipe titles
+  recipeTitles: { [recipeId: string]: string } = {}; 
+  recipeIngredients: { [recipeId: string]: Ingredient[] } = {};
+
 
   constructor(private recipeService: RecipeService, private authService: AuthService, private router: Router,
   ) {}
@@ -35,6 +38,8 @@ export class MealPlanListComponent implements OnInit {
             this.mealPlans.forEach(plan => {
               plan.meals.forEach(meal => {
                 this.fetchRecipeTitle(meal.recipeId);
+                this.fetchRecipeIngredients(meal.recipeId);
+
               });
             });
           },
@@ -49,7 +54,7 @@ export class MealPlanListComponent implements OnInit {
   }
 
   fetchRecipeTitle(recipeId: string): void {
-    if (!this.recipeTitles[recipeId]) { // Check if the title is not already in the cache
+    if (!this.recipeTitles[recipeId]) { 
       this.recipeService.getRecipeById(recipeId).subscribe((recipe: Recipe | undefined) => {
         if (recipe) {
           this.recipeTitles[recipeId] = recipe.title; // Cache the title
@@ -57,6 +62,17 @@ export class MealPlanListComponent implements OnInit {
       });
     }
   }
+
+  fetchRecipeIngredients(recipeId: string): void {
+    if (!this.recipeIngredients[recipeId]) { 
+      this.recipeService.getRecipeById(recipeId).subscribe((recipe: Recipe | undefined) => {
+        if (recipe) {
+          this.recipeIngredients[recipeId] = recipe.ingredients; 
+        }
+      });
+    }
+  }
+  
 
   getRecipeTitle(recipeId: string): string {
     return this.recipeTitles[recipeId] || 'Loading...'; // Return the title if it's in the cache, otherwise show 'Loading...'

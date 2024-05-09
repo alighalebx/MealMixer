@@ -9,18 +9,39 @@
 
     <!-- Meal Plans -->
     <h2 class="text-2xl font-bold my-4">Meal Plans</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
-      <!-- Loop through meal plans and display each one -->
-      <div *ngFor="let mealPlan of mealPlans" class="rounded-lg shadow-md overflow-hidden bg-white">
-        <div class="p-4">
-          <h3 class="text-xl font-semibold mb-2">{{ mealPlan.date }}</h3>
-          <!-- Loop through meals in the meal plan and display each one -->
-          <div *ngFor="let meal of mealPlan.meals" class="mb-2">
-            <p class="text-lg font-semibold">{{ meal.name }}</p>
-            <p class="text-gray-600">{{ getRecipeTitle(meal.recipeId) }}</p>
-          </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
+    <!-- Loop through meal plans and display each one -->
+    <div *ngFor="let mealPlan of mealPlans" class="rounded-lg shadow-md overflow-hidden bg-white">
+      <div class="p-4">
+        <h3 class="text-xl font-semibold mb-2">{{ mealPlan.date }}</h3>
+        <!-- Loop through meals in the meal plan and display each one -->
+        <div *ngFor="let meal of mealPlan.meals" class="mb-2">
+          <p class="text-lg font-semibold">{{ meal.name }}</p>
+          <p class="text-gray-600">{{ getRecipeTitle(meal.recipeId) }}</p>
         </div>
       </div>
     </div>
   </div>
-  
+
+  <!-- Shopping List Subcard -->
+  <div class="shopping-list-subcard mt-8 p-4 rounded-lg shadow-md bg-white">
+    <h2 class="text-2xl font-bold mb-4">Shopping List</h2>
+    <ul>
+      <!-- Loop through meal plans to compile a shopping list -->
+      <li *ngFor="let mealPlan of mealPlans">
+        <h3 class="text-xl font-semibold mb-2">{{ mealPlan.date }}</h3>
+        <!-- Loop through meals to list ingredients -->
+        <ul>
+          <li *ngFor="let meal of mealPlan.meals">
+            <p class="text-lg font-semibold">{{ meal.name }}:</p>
+            <ul>
+              <li *ngFor="let ingredient of recipeIngredients[meal.recipeId]">
+                {{ ingredient.name }}: {{ ingredient.quantity }}
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
